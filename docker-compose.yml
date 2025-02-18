@@ -1,0 +1,36 @@
+# 🚀 General Config
+APP_ENV=production
+APP_NAME=ContractManagement
+
+# 🚀 Server Configuration
+HTTP_PORT=8122
+HTTPS_PORT=8123
+
+# 🚀 Database (MySQL)
+DB_HOST=mysql
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=yourpassword
+DB_NAME=contracts
+
+# 🚀 MinIO (Document Storage)
+MINIO_ENDPOINT=http://minio:9000
+MINIO_ACCESS_KEY=minioadmin
+MINIO_SECRET_KEY=minioadmin
+MINIO_BUCKET_NAME=contracts
+
+# 🚀 SMTP (Email Notifications)
+SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+SMTP_USER=your-email@example.com
+SMTP_PASSWORD=your-email-password
+SMTP_FROM=contracts@example.com
+
+# 🚀 Security & Authentication
+JWT_SECRET=your_jwt_secret
+ENABLE_2FA=true
+SESSION_EXPIRY=86400  # 1 day in seconds
+
+# 🚀 Frontend
+NEXT_PUBLIC_API_URL=http://localhost:8122
+NEXT_PUBLIC_WEBSOCKET_URL=ws://localhost:8122
