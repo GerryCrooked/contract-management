@@ -1,36 +1,55 @@
-# 🚀 General Config
-APP_ENV=production
-APP_NAME=ContractManagement
+version: "3.9"
 
-# 🚀 Server Configuration
-HTTP_PORT=8122
-HTTPS_PORT=8123
+services:
+  app:
+    build: .
+    container_name: contract_management
+    restart: unless-stopped
+    depends_on:
+      - mysql
+      - minio
+    ports:
+      - "${HTTP_PORT}:${HTTP_PORT}"
+      - "${HTTPS_PORT}:${HTTPS_PORT}"
+    env_file:
+      - .env
+    networks:
+      - app_network
 
-# 🚀 Database (MySQL)
-DB_HOST=mysql
-DB_PORT=3306
-DB_USER=root
-DB_PASSWORD=yourpassword
-DB_NAME=contracts
+  mysql:
+    image: mysql:8.0
+    container_name: contract_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app_network
 
-# 🚀 MinIO (Document Storage)
-MINIO_ENDPOINT=http://minio:9000
-MINIO_ACCESS_KEY=minioadmin
-MINIO_SECRET_KEY=minioadmin
-MINIO_BUCKET_NAME=contracts
+  minio:
+    image: minio/minio
+    container_name: contract_minio
+    restart: unless-stopped
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ACCESS_KEY}
+      - MINIO_ROOT_PASSWORD=${MINIO_SECRET_KEY}
+    ports:
+      - "9000:9000"  # MinIO API
+      - "9090:9090"  # MinIO Web UI
+    volumes:
+      - minio_data:/data
+    command: server --console-address ":9090" /data
+    networks:
+      - app_network
 
-# 🚀 SMTP (Email Notifications)
-SMTP_HOST=smtp.example.com
-SMTP_PORT=587
-SMTP_USER=your-email@example.com
-SMTP_PASSWORD=your-email-password
-SMTP_FROM=contracts@example.com
+volumes:
+  mysql_data:
+  minio_data:
 
-# 🚀 Security & Authentication
-JWT_SECRET=your_jwt_secret
-ENABLE_2FA=true
-SESSION_EXPIRY=86400  # 1 day in seconds
-
-# 🚀 Frontend
-NEXT_PUBLIC_API_URL=http://localhost:8122
-NEXT_PUBLIC_WEBSOCKET_URL=ws://localhost:8122
+networks:
+  app_network:
+    driver: bridge
