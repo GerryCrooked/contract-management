@@ -12,7 +12,7 @@ WORKDIR /app
 COPY backend/package.json backend/package-lock.json ./
 RUN npm install
 COPY backend/ ./
-COPY --from=frontend /app/.next ./frontend-out  # ✅ FIXED PATH
+COPY --from=frontend /app/.next ./frontend-out  
 CMD ["node", "server.js"]
 
 EXPOSE 8122 8123
