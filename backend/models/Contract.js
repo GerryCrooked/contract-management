@@ -17,7 +17,10 @@ const Contract = db.define('Contract', {
     owner_id: { type: DataTypes.INTEGER, allowNull: false },
     assigned_to: { type: DataTypes.INTEGER, allowNull: true }
 }, {
-    timestamps: true
+    tableName: 'contracts',
+    timestamps: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at'
 });
 
 Contract.belongsTo(User, { foreignKey: 'owner_id' });
