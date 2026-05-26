@@ -133,7 +133,7 @@ export default function Dashboard() {
                                                                     'bg-slate-50 text-slate-700 ring-1 ring-inset ring-slate-600/20'}`}>
                                                                     {contract.contract_status === 'active' && <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>}
                                                                     {contract.contract_status === 'pending_approval' && <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1.5"></span>}
-                                                                    {contract.contract_status.replace('_', ' ')}
+                                                                    {contract.contract_status?.replace('_', ' ')}
                                                                 </span>
                                                             </td>
                                                             <td className="px-6 py-4 text-sm text-slate-600 font-medium">
