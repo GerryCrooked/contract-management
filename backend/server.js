@@ -4,8 +4,9 @@ const http = require('http');
 const WebSocket = require('ws');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const routes = require('./routes/fileRoutes'); // ✅ Corrected path
-const db = require('./config/database'); // ✅ Ensure database connection is initialized
+const fileRoutes = require('./routes/fileRoutes');
+const contractRoutes = require('./routes/contractRoutes');
+const db = require('./config/database');
 
 const app = express();
 const server = http.createServer(app);
@@ -13,7 +14,13 @@ const wss = new WebSocket.Server({ server });
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use('/api/files', routes); // ✅ Ensure correct route mounting
+app.use('/api/files', fileRoutes);
+app.use('/api/contracts', contractRoutes);
+
+// 🚀 Test API Endpoint
+app.get('/api/health', (req, res) => {
+    res.json({ status: "ok" });
+});
 
 // WebSocket connection
 wss.on('connection', (ws) => {
